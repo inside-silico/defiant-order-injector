@@ -4,16 +4,17 @@ from PyOBD import *
 import pandas as pd
 import time
 
-now = "10"
 PyOBD=openBYMAdata()
+
+if PyOBD.isworkingDay()==False:
+    exit()
 
 engine = create_engine("mysql+pymysql://{user}:{pw}@{db_host}:{port}/{db}"
                 .format(user=db_usr,pw=db_pass,db_host=db_host,
-                    db=quots_db,port=db_port,))
+                    db=quots_db,port=db_port,auth_plugin='mysql_native_password',))
 time_sleep=4
-now=0
-#while now!="17":
-while now < 10:
+now = "10"
+while now!="17":
     PyOBD=openBYMAdata()
     PyOBD.get_bonds().drop(["expiration"],axis=1).to_sql("bonds_48hs",con=engine,if_exists="replace")
     print("bonds_df")
@@ -31,6 +32,5 @@ while now < 10:
     print("cedear_df")
     time.sleep(time_sleep)
     
-    
-    now=now+1
-    #now = time.strftime("%H")
+
+    now = time.strftime("%H")

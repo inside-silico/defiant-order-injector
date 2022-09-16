@@ -26,3 +26,4 @@ lxml
 html5lib
 flask-cors
 python-dotenv
+cryptography
